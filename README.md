@@ -8,7 +8,7 @@ Deploys a Lambda function that watches for Twitter handles to become available
 - Create a Incoming Webhook with Slack.
   - https://slack.com/apps/A0F7XDUAZ-incoming-webhooks
 - Encrypt the webhook URL with the KMS key and include it as a variable. See below.
-  - `aws kms encrypt --key-id 123456-7890-abcd-efgh-98765432210 --plaintext fileb://<(echo -n 'https://hooks.slack.com/services/ABCDEFGH/IJKLMNO/123456abcdefgh')`
+  - `aws kms encrypt --key-id 123456-7890-abcd-efgh-98765432210 --plaintext fileb://<(echo -n 'https://hooks.slack.com/services/ABCDEFGH/IJKLMNO/123456abcdefgh') --query CiphertextBlob`
 
 ### Build python deps
 The `requests` Python module is needed for this script to run. Since Lambda doesn't include `requests` natively, I've included it in this repo, but in case you need to update or re-add it, run the following command:
