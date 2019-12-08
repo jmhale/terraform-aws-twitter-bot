@@ -35,6 +35,11 @@ module "terraform-aws-twitter-bot" {
 }
 
 ```
+
+Once the module is deployed, you'll need to upload a file named `twitter_accounts_check` to the S3 bucket that is created.
+
+This will must contain the list of account handles to check. One account per line.
+
 ## Outputs
 None
 
