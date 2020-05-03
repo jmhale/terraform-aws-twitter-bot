@@ -86,7 +86,7 @@ resource "aws_iam_role_policy_attachment" "twitterbot_lambda_roleattach" {
 resource "aws_lambda_function" "twitterbot_lambda" {
   filename         = "${path.module}/files/lambda_payload.zip"
   function_name    = "twitter-bot"
-  role             = "${aws_iam_role.twitterbot_lambda_role.arn}"
+  role             = aws_iam_role.twitterbot_lambda_role.arn
   handler          = "twitter_bot.handler"
   source_code_hash = data.archive_file.python_payload.output_base64sha256
   timeout          = 10
@@ -109,15 +109,15 @@ resource "aws_cloudwatch_event_rule" "every_sixty_minutes" {
 }
 
 resource "aws_cloudwatch_event_target" "check_twitterbot_sched" {
-  rule      = "${aws_cloudwatch_event_rule.every_sixty_minutes.name}"
+  rule      = aws_cloudwatch_event_rule.every_sixty_minutes.name
   target_id = "check_twitterbot"
-  arn       = "${aws_lambda_function.twitterbot_lambda.arn}"
+  arn       = aws_lambda_function.twitterbot_lambda.arn
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_call_twitterbot" {
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
-  function_name = "${aws_lambda_function.twitterbot_lambda.function_name}"
+  function_name = aws_lambda_function.twitterbot_lambda.function_name
   principal     = "events.amazonaws.com"
-  source_arn    = "${aws_cloudwatch_event_rule.every_sixty_minutes.arn}"
+  source_arn    = aws_cloudwatch_event_rule.every_sixty_minutes.arn
 }
